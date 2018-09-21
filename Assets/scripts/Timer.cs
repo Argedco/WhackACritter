@@ -15,7 +15,7 @@ public class Timer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        StartTimer();
+       
 	}
 	
 	// Update is called once per frame
@@ -48,6 +48,7 @@ public class Timer : MonoBehaviour {
     public void StopTimer()
     {
         displayText.text = Mathf.CeilToInt(timeRemaining).ToString();
+        timeRemaining = 0;
     }
 
     //Is the timer currently running?

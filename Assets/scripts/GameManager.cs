@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
     public List<GameObject> critterPrefabs;
     public float critterSpawnFrequency = 1.0f;
     public Score ScoreDisplay;
+    public Timer timer;
+    public SpriteRenderer button;
 
     private float lastCritterSpawn = 0;
 
@@ -18,7 +20,7 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float nextSpawnTime = lastCritterSpawn + critterSpawnFrequency;
-		if (Time.time >= lastCritterSpawn + critterSpawnFrequency) {
+		if (Time.time >= nextSpawnTime && timer.IsTimerRunning() == true) {
 
             //It is time.
 
@@ -32,12 +34,33 @@ public class GameManager : MonoBehaviour {
             //Get Access to our critter script
             Critter critterScript = spawnedCritter.GetComponent<Critter>();
 
-            //Tell the critter script the score object
+            //Tell the critter script the score object and the timer object
             critterScript.scoreDisplay = ScoreDisplay;
+            critterScript.timer = timer;
 
             //Update the most recent critter spawn time.
             lastCritterSpawn = Time.time;
 
+
+        }
+
+        //Update Button Visibility
+        if (timer.IsTimerRunning() == true)
+        {
+            button.enabled = false;
+        }
+        else
+        {
+            button.enabled = true;
         }
 	}
+
+    public void OnMouseDown()
+    {
+        if (timer.IsTimerRunning() == false)
+        {
+            timer.StartTimer();
+            ScoreDisplay.ResetScore();
+        }
+    }
 }
